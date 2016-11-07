@@ -56,26 +56,29 @@ describe('hello_world', () => {
     jasmine['DEFAULT_TIMEOUT_INTERVAL'] = 10000;
   });
 
-  it('should show the correct error locations in the typescript files without changes', () => {
+  it('should show the correct error locations in the typescript files without changes', (done) => {
     return result.getStderrAsync().then((stderr) => {
       expect(stderr).toContain('Hello.ts:13:11');
       expect(stderr).toContain('Hello.test.ts:9:19');
+      done();
     });
   });
 
-  it('should show the correct error locations in the typescript files with changes in source file', () => {
+  it('should show the correct error locations in the typescript files with changes in source file', (done) => {
     let promise = result.getStderrAsync().then((stderr) => {
       expect(stderr).toContain('Hello.ts:11:11');
       expect(stderr).toContain('Hello.test.ts:9:19');
+      done();
     });
     fs.writeFileSync(path.resolve(__dirname, '../watch-test/Hello.ts'), helloFileUpdate);
     return promise;
   });
 
-  it('should show the correct error locations in the typescript files with changes in source file and test file', () => {
+  it('should show the correct error locations in the typescript files with changes in source file and test file', (done) => {
     let promise = result.getStderrAsync().then((stderr) => {
       expect(stderr).toContain('Hello.ts:11:11');
       expect(stderr).toContain('Hello.test.ts:11:19');
+      done();
     });
     fs.writeFileSync(path.resolve(__dirname, '../watch-test/__tests__/Hello.test.ts'), testFileUpdate);
     return promise;
