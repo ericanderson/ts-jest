@@ -70,7 +70,11 @@ describe('hello_world', () => {
       expect(stderr).toContain('Hello.test.ts:9:19');
       done();
     });
-    fs.writeFileSync(path.resolve(__dirname, '../watch-test/Hello.ts'), helloFileUpdate);
+    try {
+      fs.writeFileSync(path.resolve(__dirname, '../watch-test/Hello.ts'), helloFileUpdate);
+    } catch (e) {
+      console.log(e.toString());
+    }  
     return promise;
   });
 
@@ -80,7 +84,11 @@ describe('hello_world', () => {
       expect(stderr).toContain('Hello.test.ts:11:19');
       done();
     });
-    fs.writeFileSync(path.resolve(__dirname, '../watch-test/__tests__/Hello.test.ts'), testFileUpdate);
+    try {
+      fs.writeFileSync(path.resolve(__dirname, '../watch-test/__tests__/Hello.test.ts'), testFileUpdate);
+    } catch (e) {
+      console.log(e.toString());
+    }  
     return promise;
   });
 
