@@ -35,15 +35,14 @@ export default function runJestInWatchMode(dir, args?: any[]) {
   const childProcess = spawn(JEST_PATH, args, {
     cwd: dir,
   });
-  let promiseNumber = 0;
+  childProcess.stderr.on('data', (data) => {
+    console.log(data.toString());
+  });
   let getStderrAsync = () => {
     return new Promise((resolve: (value: string) => void) => {
       let stderr = '';
-      let index = promiseNumber + 1;
-      promiseNumber++;
       let listener = (data) => {
         stderr += data.toString();
-        console.log('#' + index.toString() + ' ' + data.toString().includes('Ran all').toString());
         if (data.toString().includes('Ran all')) {
           resolve(stderr);
           childProcess.stderr.removeListener('data', listener);
