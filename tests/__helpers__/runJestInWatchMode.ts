@@ -40,6 +40,7 @@ export default function runJestInWatchMode(dir, args?: any[]) {
       let stderr = '';
       let listener = (data) => {
         stderr += data.toString();
+        console.log(data.toString());
         if (data.toString().includes('Ran all')) {
           resolve(stderr);
           childProcess.stderr.removeListener('data', listener);
