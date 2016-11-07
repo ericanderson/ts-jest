@@ -38,14 +38,14 @@ export default function runJestInWatchMode(dir, args?: any[]) {
   let getStderrAsync = () => {
     return new Promise((resolve: (value: string) => void) => {
       let stderr = '';
-      childProcess.stderr.on('data', (data) => {
+      let listener = (data) => {
         stderr += data.toString();
-        console.log(data.toString());
         if (data.toString().includes('Ran all')) {
           resolve(stderr);
-          childProcess.stderr.removeAllListeners('data');
+          childProcess.stderr.removeListener('data', listener);
         }
-      });
+      };
+      childProcess.stderr.on('data', listener);
     });
   };
 
