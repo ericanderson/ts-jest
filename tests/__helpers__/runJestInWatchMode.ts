@@ -35,7 +35,9 @@ export default function runJestInWatchMode(dir, args?: any[]) {
   const childProcess = spawn(JEST_PATH, args, {
     cwd: dir,
   });
-  childProcess.stderr.pipe(process.stdout);
+  childProcess.stderr.on('data', (data) => {
+    console.log(data.toString());
+  });
   let getStderrAsync = () => {
     return new Promise((resolve: (value: string) => void) => {
       let stderr = '';
@@ -49,6 +51,5 @@ export default function runJestInWatchMode(dir, args?: any[]) {
       childProcess.stderr.on('data', listener);
     });
   };
-
   return { childProcess, getStderrAsync };
 }
